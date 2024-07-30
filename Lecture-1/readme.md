@@ -111,3 +111,117 @@ Starting to use a shell involves accessing the command-line interface (CLI) on y
 - **Running Commands as Administrator**:
   - In Windows, right-click the Command Prompt or PowerShell and select "Run as administrator."
   - In macOS/Linux, prefix commands with `sudo` to run them with superuser privileges.
+
+## $PATH And Its Use Cases
+
+The `$PATH` environment variable is a critical component in Unix-like operating systems (such as Linux and macOS) and in Windows, used to specify a set of directories where executable programs are located. When you type a command in the shell, the system searches through the directories listed in `$PATH` to find the executable file corresponding to that command.
+
+### Understanding `$PATH`
+
+- **Environment Variable**: `$PATH` is an environment variable that stores a colon-separated list of directories.
+- **Executable Search Path**: When you run a command, the shell looks in each directory listed in `$PATH` for an executable file that matches the command name.
+
+### Viewing `$PATH`
+
+To view the current value of `$PATH`, you can use the `echo` command in the shell:
+
+#### Unix-like Systems (Linux, macOS):
+
+```sh
+echo $PATH
+```
+
+#### Windows (Command Prompt):
+
+```sh
+echo %PATH%
+```
+
+#### Windows (PowerShell):
+
+```sh
+$env:Path
+```
+
+### Modifying `$PATH`
+
+You can temporarily or permanently modify the `$PATH` variable to include new directories where executables are located.
+
+#### Temporarily Adding to `$PATH`
+
+Changes will only last for the duration of the current session.
+
+#### Unix-like Systems:
+
+```sh
+export PATH=$PATH:/new/directory/path
+```
+
+#### Windows (Command Prompt):
+
+```sh
+set PATH=%PATH%;C:\new\directory\path
+```
+
+#### Windows (PowerShell):
+
+```sh
+$env:Path += ";C:\new\directory\path"
+```
+
+#### Permanently Adding to `$PATH`
+
+Changes will persist across sessions and reboots.
+
+#### Unix-like Systems:
+
+Add the `export` command to your shell's configuration file (e.g., `~/.bashrc`, `~/.bash_profile`, `~/.zshrc`).
+
+Example for `~/.bashrc`:
+
+```sh
+export PATH=$PATH:/new/directory/path
+```
+
+After adding, reload the file:
+
+```sh
+source ~/.bashrc
+```
+
+#### Windows:
+
+Modify the `Path` variable in the System Environment Variables:
+
+1. Open Control Panel.
+2. Go to `System and Security > System > Advanced system settings`.
+3. Click on `Environment Variables`.
+4. Under `System variables`, find `Path`, and click `Edit`.
+5. Add the new directory path and click `OK`.
+
+### Common Uses of `$PATH`
+
+1. **Running Programs**: Ensures you can run executables located in different directories without specifying their full paths.
+2. **Custom Scripts**: Allows you to create custom scripts and place them in a directory included in `$PATH` for easy access.
+
+### Example
+
+Assume you have a script located at `/home/user/scripts/myscript.sh`. By default, if `/home/user/scripts` is not in your `$PATH`, you would need to run the script like this:
+
+```sh
+/home/user/scripts/myscript.sh
+```
+
+By adding `/home/user/scripts` to your `$PATH`, you can run the script from anywhere using just:
+
+```sh
+myscript.sh
+```
+
+### Troubleshooting
+
+If a command is not found, it might be because:
+
+1. The directory containing the executable is not in `$PATH`.
+2. There is a typo in the command.
+3. The executable does not have the appropriate execute permissions.
