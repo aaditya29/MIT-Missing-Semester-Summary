@@ -141,3 +141,90 @@ fi
 - This script checks if both `file1.txt` and `file2.txt` exist.
 
 These are the basics of writing `if` statements in shell scripting. If you need further examples or have specific questions, feel free to ask!
+
+## Exit Codes
+
+### Exit Codes in Shell
+
+In shell scripting, exit codes (also known as return codes or status codes) are a vital part of how the shell handles command execution. Each command executed in a shell script returns an exit code, which indicates the success or failure of that command.
+
+- **Exit Code `0`**: This code indicates that the command was successful.
+- **Non-Zero Exit Codes**: These codes indicate different types of errors. The specific non-zero value can provide more information about the error.
+
+### Major Exit Codes
+
+Here are some commonly used exit codes:
+
+1. **`0`**: Success. The command executed successfully without any errors.
+2. **`1`**: General error. This is a catch-all for miscellaneous errors.
+3. **`2`**: Misuse of shell built-ins (e.g., missing keyword or command, syntax error).
+4. **`126`**: Command invoked cannot execute (e.g., permission problem or command is not an executable).
+5. **`127`**: "Command not found" (e.g., a typo in the command).
+6. **`128`**: Invalid argument to `exit` (e.g., exit status out of range).
+7. **`130`**: Script terminated by Control-C (`SIGINT`).
+8. **`137`**: Script terminated by `SIGKILL` (kill command).
+9. **`139`**: Segmentation fault.
+10. **`255`**: Exit status out of range. It’s often used when a script terminates with an error that has no specific code.
+
+### Coding Example
+
+Here’s a simple script that demonstrates the use of exit codes:
+
+```bash
+#!/bin/bash
+
+# Attempt to change to a directory that doesn't exist
+cd /nonexistent_directory
+# Capture the exit code of the previous command
+exit_code=$?
+
+# Check the exit code
+if [ $exit_code -eq 0 ]; then
+    echo "Directory change was successful."
+elif [ $exit_code -eq 1 ]; then
+    echo "General error occurred."
+elif [ $exit_code -eq 2 ]; then
+    echo "Shell built-in misuse."
+elif [ $exit_code -eq 127 ]; then
+    echo "Command not found."
+else
+    echo "An unknown error occurred with exit code $exit_code."
+fi
+
+# Exit the script with the captured exit code
+exit $exit_code
+```
+
+#### Explanation:
+
+- The script attempts to change to a non-existent directory, which will fail and produce an exit code.
+- The exit code is stored in the variable `exit_code` using `$?`.
+- The script then checks the value of `exit_code` to determine what happened and prints an appropriate message.
+- Finally, the script exits with the same exit code it captured.
+
+### How to Use Exit Codes in Scripts
+
+Exit codes are often used to control the flow of a script. For example, you might decide to exit a script early if a critical command fails:
+
+```bash
+#!/bin/bash
+
+# Copy a file
+cp important_file.txt /backup/
+if [ $? -ne 0 ]; then
+    echo "File copy failed! Exiting..."
+    exit 1
+fi
+
+# Continue with other commands if the copy was successful
+echo "File copy succeeded! Continuing with the script..."
+```
+
+In this example:
+
+- If the `cp` command fails, the script exits immediately with an exit code of `1`.
+- If the `cp` command is successful, the script continues.
+
+### Conclusion
+
+Exit codes are a fundamental part of error handling in shell scripting. They help you determine the outcome of commands and can be used to control the flow of a script based on whether previous commands were successful or not. By understanding and using exit codes, you can write more robust and reliable scripts.
