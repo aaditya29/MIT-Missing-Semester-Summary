@@ -10,3 +10,5 @@ else
     echo "$command command does not exist. installing it right now!!!"
     sudo apt update && sudo apt install -y htop
 fi
+
+$command
