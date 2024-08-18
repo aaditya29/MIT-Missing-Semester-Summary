@@ -544,3 +544,239 @@ echo "Script finished." >> log.txt
   - `<`: Redirect stdin from a file.
 
 - **Pipelines**: Use `|` to pass output from one command to another.
+
+## Functions in Bash Scripting
+
+### Functions in Bash Scripting
+
+Functions in bash scripting allow you to group a set of commands together under a single name. Once defined, a function can be called multiple times within your script, helping to organize and reuse code.
+
+### Why Use Functions?
+
+- **Code Reusability**: You can write a block of code once and reuse it by calling the function.
+- **Organization**: Functions help organize your script into logical sections, making it easier to read and maintain.
+- **Modularity**: Functions can be designed to perform specific tasks, promoting modularity in your scripts.
+
+### Defining a Function
+
+The basic syntax for defining a function in bash is:
+
+```bash
+function_name() {
+    # Commands to execute
+}
+```
+
+Alternatively, you can also define a function without the parentheses:
+
+```bash
+function function_name {
+    # Commands to execute
+}
+```
+
+### Example 1: A Simple Function
+
+```bash
+#!/bin/bash
+
+greet() {
+    echo "Hello, $1!"
+}
+
+greet "World"
+```
+
+**Explanation**:
+
+- **Function Definition**: The `greet` function is defined with the keyword `greet()`.
+- **Function Call**: The function is called with `greet "World"`.
+- **$1**: Inside the function, `$1` represents the first argument passed to the function. In this case, `$1` is `"World"`.
+
+**Output**:
+
+```
+Hello, World!
+```
+
+### Passing Arguments to Functions
+
+You can pass arguments to a function just like you do with a script. Inside the function, these arguments are accessed using positional parameters like `$1`, `$2`, etc.
+
+**Example 2: Function with Multiple Arguments**
+
+```bash
+#!/bin/bash
+
+add_numbers() {
+    result=$(( $1 + $2 ))
+    echo "The sum is: $result"
+}
+
+add_numbers 5 10
+```
+
+**Explanation**:
+
+- **$1 and $2**: The first and second arguments passed to the function are represented by `$1` and `$2`, respectively.
+- **$(( ))**: This is the arithmetic expansion syntax in bash, used to perform arithmetic operations.
+
+**Output**:
+
+```
+The sum is: 15
+```
+
+### Returning Values from Functions
+
+In bash, functions do not return values like in some other programming languages. Instead, you can use `echo` to output a value, or you can return a status code using the `return` command.
+
+**Example 3: Returning a Status Code**
+
+```bash
+#!/bin/bash
+
+is_even() {
+    if (( $1 % 2 == 0 )); then
+        return 0
+    else
+        return 1
+    fi
+}
+
+is_even 4
+if [ $? -eq 0 ]; then
+    echo "The number is even."
+else
+    echo "The number is odd."
+fi
+```
+
+**Explanation**:
+
+- **Return Status**: The function `is_even` returns `0` if the number is even and `1` if it’s odd.
+- **$?**: After calling the function, `$?` holds the exit status of the function (0 or 1 in this case).
+
+**Output**:
+
+```
+The number is even.
+```
+
+### Using `local` Variables in Functions
+
+Variables in bash functions are by default global, meaning they can be accessed outside the function. To limit a variable’s scope to within the function, use the `local` keyword.
+
+**Example 4: Using `local` Variables**
+
+```bash
+#!/bin/bash
+
+multiply_numbers() {
+    local result=$(( $1 * $2 ))
+    echo $result
+}
+
+result=$(multiply_numbers 3 4)
+echo "The product is: $result"
+```
+
+**Explanation**:
+
+- **local**: The `result` variable is local to the `multiply_numbers` function.
+- **Command Substitution**: The result of the function is captured using `$(...)` and stored in the `result` variable outside the function.
+
+**Output**:
+
+```
+The product is: 12
+```
+
+### Recursive Functions
+
+Bash supports recursive functions, which means a function can call itself. This is useful for tasks like calculating factorials, traversing directories, etc.
+
+**Example 5: Recursive Function for Factorial Calculation**
+
+```bash
+#!/bin/bash
+
+factorial() {
+    if [ $1 -le 1 ]; then
+        echo 1
+    else
+        local temp=$(( $1 - 1 ))
+        local result=$(factorial $temp)
+        echo $(( $1 * result ))
+    fi
+}
+
+echo "Factorial of 5 is: $(factorial 5)"
+```
+
+**Explanation**:
+
+- **Recursion**: The `factorial` function calls itself to compute the factorial of a number.
+- **Base Case**: If the number is less than or equal to 1, it returns 1.
+- **Recursive Case**: Otherwise, it multiplies the number by the factorial of the number minus 1.
+
+**Output**:
+
+```
+Factorial of 5 is: 120
+```
+
+### Function Libraries
+
+You can group multiple functions into a single script file to create a function library. This allows you to reuse common functions across different scripts.
+
+**Example 6: Creating and Using a Function Library**
+
+**my_functions.sh**:
+
+```bash
+#!/bin/bash
+
+greet() {
+    echo "Hello, $1!"
+}
+
+add_numbers() {
+    echo $(( $1 + $2 ))
+}
+```
+
+**main_script.sh**:
+
+```bash
+#!/bin/bash
+
+source my_functions.sh
+
+greet "Alice"
+sum=$(add_numbers 10 20)
+echo "Sum: $sum"
+```
+
+**Explanation**:
+
+- **source**: The `source` command (or `.`) is used to include the functions from `my_functions.sh` in `main_script.sh`.
+- **Reuse**: You can now use `greet` and `add_numbers` in `main_script.sh`.
+
+**Output**:
+
+```
+Hello, Alice!
+Sum: 30
+```
+
+### Summary
+
+- **Function Definition**: Use `function_name() { ... }` to define a function.
+- **Arguments**: Pass arguments to functions and access them using `$1`, `$2`, etc.
+- **Returning Values**: Use `echo` to output values or `return` to return status codes.
+- **local Variables**: Use `local` to define variables that are only accessible within the function.
+- **Recursion**: Functions can call themselves to perform recursive operations.
+- **Function Libraries**: Create reusable libraries of functions that can be sourced in other scripts.
+
+Functions are a powerful tool in bash scripting that help you create modular, reusable, and organized scripts. If you have specific use cases or need further clarification, feel free to ask!
