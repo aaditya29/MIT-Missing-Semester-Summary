@@ -379,3 +379,168 @@ Iteration 5
 - You can iterate over strings, numbers, files, or the output of commands.
 - The loop's basic structure is `for variable in list; do ... done`.
 - Bash also supports C-style `for` loops with a more traditional syntax for initializing, testing, and incrementing a loop variable.
+
+## Data Streams
+
+### Understanding Data Streams in Bash Scripting
+
+Data streams in Bash refer to the pathways through which data is transferred during the execution of commands. In Unix-like operating systems, these streams play a crucial role in handling input, output, and errors.
+
+### The Three Standard Streams
+
+There are three primary data streams that every command interacts with:
+
+1. **Standard Input (stdin)**:
+
+   - **File Descriptor**: `0`
+   - **Purpose**: This is the input stream that a command reads from. By default, it’s the keyboard.
+   - **Redirection Symbol**: `<`
+
+2. **Standard Output (stdout)**:
+
+   - **File Descriptor**: `1`
+   - **Purpose**: This is the output stream where a command writes its output. By default, it’s the terminal screen.
+   - **Redirection Symbol**: `>`
+
+3. **Standard Error (stderr)**:
+   - **File Descriptor**: `2`
+   - **Purpose**: This is the output stream where a command writes its error messages. By default, it’s also the terminal screen, but it is separate from stdout.
+   - **Redirection Symbol**: `2>`
+
+### Redirecting Data Streams
+
+Bash allows you to redirect these streams to files, other commands, or even discard them. Here’s how you can work with data streams:
+
+#### 1. **Redirecting Standard Output (stdout)**
+
+Redirecting stdout allows you to send the output of a command to a file instead of displaying it on the screen.
+
+**Example**:
+
+```bash
+ls > file_list.txt
+```
+
+- **Explanation**: This command lists the contents of the current directory and writes the output to `file_list.txt`. If the file exists, it is overwritten.
+
+**Appending to a File**:
+
+```bash
+ls >> file_list.txt
+```
+
+- **Explanation**: This command appends the directory listing to `file_list.txt` instead of overwriting it.
+
+#### 2. **Redirecting Standard Error (stderr)**
+
+Redirecting stderr allows you to capture error messages in a file.
+
+**Example**:
+
+```bash
+ls /nonexistent_directory 2> error_log.txt
+```
+
+- **Explanation**: The command tries to list a non-existent directory, and the error message is written to `error_log.txt`.
+
+#### 3. **Redirecting Both stdout and stderr**
+
+You can redirect both stdout and stderr to the same file or different files.
+
+**Example**:
+
+```bash
+command > output.txt 2> error_log.txt
+```
+
+- **Explanation**: The output of `command` is written to `output.txt`, while any error messages are written to `error_log.txt`.
+
+**Redirecting Both to the Same File**:
+
+```bash
+command > all_output.txt 2>&1
+```
+
+- **Explanation**: The `2>&1` syntax redirects stderr (`2`) to the same place as stdout (`1`), so both output and error messages go into `all_output.txt`.
+
+#### 4. **Redirecting Standard Input (stdin)**
+
+Redirecting stdin allows a command to take its input from a file instead of the keyboard.
+
+**Example**:
+
+```bash
+sort < unsorted_file.txt
+```
+
+- **Explanation**: The `sort` command reads from `unsorted_file.txt` instead of from the keyboard, and sorts its contents.
+
+#### 5. **Discarding Output**
+
+You can discard unwanted output by redirecting it to `/dev/null`, which is a special file that discards all data written to it.
+
+**Example**:
+
+```bash
+command > /dev/null 2>&1
+```
+
+- **Explanation**: This command runs `command`, but discards both stdout and stderr.
+
+### Pipelines
+
+A pipeline allows you to connect multiple commands together, where the output of one command becomes the input for the next. Pipelines use the `|` operator.
+
+**Example**:
+
+```bash
+ls | grep ".txt"
+```
+
+- **Explanation**: This pipeline lists the contents of the current directory and passes the output to `grep`, which filters the list for files containing ".txt".
+
+### Combining Redirection and Pipelines
+
+You can combine redirection and pipelines to create complex workflows in Bash.
+
+**Example**:
+
+```bash
+find /path/to/search -name "*.log" 2>/dev/null | xargs cat > all_logs.txt
+```
+
+- **Explanation**:
+  - `find` searches for all `.log` files in a directory, suppressing any error messages.
+  - The list of found files is piped (`|`) to `xargs cat`, which concatenates the contents of all found files.
+  - The final output is redirected (`>`) to `all_logs.txt`.
+
+### Example: Logging Output and Errors
+
+```bash
+#!/bin/bash
+
+echo "Starting script..." > log.txt
+command1 >> log.txt 2>> error_log.txt
+command2 >> log.txt 2>> error_log.txt
+echo "Script finished." >> log.txt
+```
+
+- **Explanation**:
+  - The script logs its start to `log.txt`.
+  - It runs `command1` and `command2`, appending their outputs to `log.txt` and their errors to `error_log.txt`.
+  - Finally, it logs the script’s completion to `log.txt`.
+
+### Summary
+
+- **Standard Streams**:
+  - `stdin (0)`: Input stream, default is the keyboard.
+  - `stdout (1)`: Output stream, default is the terminal.
+  - `stderr (2)`: Error stream, default is the terminal.
+- **Redirection**:
+
+  - `>`: Redirect stdout to a file.
+  - `>>`: Append stdout to a file.
+  - `2>`: Redirect stderr to a file.
+  - `<`: Redirect stdin from a file.
+
+- **Pipelines**: Use `|` to pass output from one command to another.
