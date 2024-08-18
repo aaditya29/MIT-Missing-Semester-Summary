@@ -228,3 +228,154 @@ In this example:
 ### Conclusion
 
 Exit codes are a fundamental part of error handling in shell scripting. They help you determine the outcome of commands and can be used to control the flow of a script based on whether previous commands were successful or not. By understanding and using exit codes, you can write more robust and reliable scripts.
+
+## `for` Loops in Bash Scripting
+
+The `for` loop is one of the most commonly used loops in bash scripting. It allows you to iterate over a list of items, executing a block of code for each item in the list.
+
+### Basic Syntax
+
+The basic syntax of a `for` loop in bash is:
+
+```bash
+for variable in list
+do
+    # Commands to execute for each item
+done
+```
+
+- **`variable`**: This is a placeholder that takes the value of each item in the list, one at a time, during each iteration of the loop.
+- **`list`**: This can be a sequence of numbers, a list of strings, files, or the output of a command.
+- **`do ... done`**: The block of code between `do` and `done` is executed for each item in the list.
+
+### Example 1: Iterating Over a List of Strings
+
+```bash
+#!/bin/bash
+
+for fruit in apple banana cherry
+do
+    echo "I like $fruit"
+done
+```
+
+- **Explanation**: The `for` loop iterates over the list `apple banana cherry`. During each iteration, the variable `fruit` takes the value of each item in the list, and the `echo` command prints a message.
+
+**Output**:
+
+```
+I like apple
+I like banana
+I like cherry
+```
+
+### Example 2: Iterating Over a Range of Numbers
+
+```bash
+#!/bin/bash
+
+for number in {1..5}
+do
+    echo "Number: $number"
+done
+```
+
+- **Explanation**: The `for` loop iterates over the numbers from `1` to `5`. The variable `number` takes each value in the range, and the `echo` command prints it.
+
+**Output**:
+
+```
+Number: 1
+Number: 2
+Number: 3
+Number: 4
+Number: 5
+```
+
+### Example 3: Iterating Over Files in a Directory
+
+```bash
+#!/bin/bash
+
+for file in /path/to/directory/*
+do
+    echo "Processing $file"
+done
+```
+
+- **Explanation**: The `for` loop iterates over all files in the specified directory. The `file` variable holds the name of each file, and the script prints a message for each one.
+
+**Output**:
+
+```
+Processing /path/to/directory/file1.txt
+Processing /path/to/directory/file2.txt
+Processing /path/to/directory/file3.txt
+...
+```
+
+### Example 4: Using `for` Loop with Command Output
+
+```bash
+#!/bin/bash
+
+for user in $(cat /etc/passwd | cut -d ':' -f 1)
+do
+    echo "User: $user"
+done
+```
+
+- **Explanation**: This `for` loop iterates over the list of usernames extracted from the `/etc/passwd` file. The `cut` command extracts the first field (username) from each line.
+
+**Output**:
+
+```
+User: root
+User: daemon
+User: bin
+...
+```
+
+### Example 5: C-Style `for` Loop
+
+Bash also supports a C-style `for` loop, similar to those found in languages like C, C++, or Java:
+
+```bash
+#!/bin/bash
+
+for (( i=1; i<=5; i++ ))
+do
+    echo "Iteration $i"
+done
+```
+
+- **Explanation**: This loop starts with `i` equal to `1`, increments `i` by `1` after each iteration, and stops when `i` is greater than `5`.
+
+**Output**:
+
+```
+Iteration 1
+Iteration 2
+Iteration 3
+Iteration 4
+Iteration 5
+```
+
+### How to Run a Bash Script with a `for` Loop
+
+1. **Create a Script**: Write your script in a text editor and save it with a `.sh` extension (e.g., `my_script.sh`).
+2. **Make the Script Executable**: Use the `chmod` command to make your script executable.
+   ```bash
+   chmod +x my_script.sh
+   ```
+3. **Run the Script**: Execute the script by running:
+   ```bash
+   ./my_script.sh
+   ```
+
+### Summary
+
+- The `for` loop is used to iterate over a list of items, executing a block of code for each item.
+- You can iterate over strings, numbers, files, or the output of commands.
+- The loop's basic structure is `for variable in list; do ... done`.
+- Bash also supports C-style `for` loops with a more traditional syntax for initializing, testing, and incrementing a loop variable.
