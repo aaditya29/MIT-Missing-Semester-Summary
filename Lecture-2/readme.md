@@ -780,3 +780,207 @@ Sum: 30
 - **Function Libraries**: Create reusable libraries of functions that can be sourced in other scripts.
 
 Functions are a powerful tool in bash scripting that help you create modular, reusable, and organized scripts. If you have specific use cases or need further clarification, feel free to ask!
+
+## Regular Expressions in the Bash Scripting
+
+### Basic Regular Expressions (BRE) in Bash Scripting
+
+Basic Regular Expressions (BRE) are a powerful tool in bash scripting for searching, matching, and manipulating text. BRE patterns are used with tools like `grep`, `sed`, and `awk` to perform operations based on patterns in text.
+
+### Defining BRE Patterns
+
+BRE patterns consist of characters and metacharacters that help define the pattern you're looking to match. Below are some common elements of BRE patterns:
+
+#### 1. **Literal Characters**
+
+- Matches the exact character in the text.
+- Example: The pattern `abc` matches the string "abc" exactly.
+
+#### 2. **Anchors**
+
+- **`^`**: Matches the start of a line.
+  - Example: `^abc` matches "abc" only if it's at the beginning of a line.
+- **`$`**: Matches the end of a line.
+  - Example: `abc$` matches "abc" only if it's at the end of a line.
+
+#### 3. **Dot `.`**
+
+- Matches any single character except a newline.
+- Example: `a.c` matches "abc", "a1c", "a_c", but not "ac".
+
+#### 4. **Brackets `[]`**
+
+- Matches any one of the characters inside the brackets.
+- Example: `[abc]` matches "a", "b", or "c".
+- **Ranges**: You can specify a range of characters.
+  - Example: `[a-z]` matches any lowercase letter.
+
+#### 5. **Negation `[^]`**
+
+- Matches any character not inside the brackets.
+- Example: `[^abc]` matches any character except "a", "b", or "c".
+
+#### 6. **Asterisk `*`**
+
+- Matches zero or more occurrences of the preceding element.
+- Example: `ab*c` matches "ac", "abc", "abbc", "abbbc", etc.
+
+#### 7. **Backslash `\`**
+
+- Escapes the special meaning of a metacharacter.
+- Example: `\*` matches the literal asterisk `*`.
+
+### Common BRE Patterns and Their Usage
+
+#### 1. **Matching a Word**
+
+```bash
+echo "hello world" | grep "hello"
+```
+
+- **Explanation**: The pattern `hello` is a simple literal match, and `grep` will output the line containing "hello".
+
+#### 2. **Matching at the Start of a Line**
+
+```bash
+echo -e "hello\nworld" | grep "^hello"
+```
+
+- **Explanation**: The pattern `^hello` matches "hello" only if it appears at the start of a line.
+
+**Output**:
+
+```
+hello
+```
+
+#### 3. **Matching at the End of a Line**
+
+```bash
+echo -e "hello\nworld" | grep "world$"
+```
+
+- **Explanation**: The pattern `world$` matches "world" only if it appears at the end of a line.
+
+**Output**:
+
+```
+world
+```
+
+#### 4. **Using the Dot `.`**
+
+```bash
+echo "abc axc a1c" | grep "a.c"
+```
+
+- **Explanation**: The pattern `a.c` matches any string that starts with "a", ends with "c", and has any single character in between.
+
+**Output**:
+
+```
+abc axc a1c
+```
+
+#### 5. **Using Brackets `[]` for Character Classes**
+
+```bash
+echo "abc aac acc adc" | grep "a[bc]c"
+```
+
+- **Explanation**: The pattern `a[bc]c` matches any string that starts with "a", ends with "c", and has either "b" or "c" in between.
+
+**Output**:
+
+```
+abc acc
+```
+
+#### 6. **Using Negation `[^]`**
+
+```bash
+echo "abc aac acc adc" | grep "a[^b]c"
+```
+
+- **Explanation**: The pattern `a[^b]c` matches any string that starts with "a", ends with "c", and does not have "b" in between.
+
+**Output**:
+
+```
+aac acc adc
+```
+
+#### 7. **Using Asterisk `*` for Repetition**
+
+```bash
+echo "ac abc abbc abbbc" | grep "ab*c"
+```
+
+- **Explanation**: The pattern `ab*c` matches "ac", "abc", "abbc", "abbbc", etc. It looks for "a", followed by zero or more "b"s, and then "c".
+
+**Output**:
+
+```
+ac abc abbc abbbc
+```
+
+#### 8. **Escaping Metacharacters**
+
+```bash
+echo "1+1=2" | grep "1\+1"
+```
+
+- **Explanation**: The pattern `1\+1` matches the literal string "1+1". The backslash `\` escapes the special meaning of the `+` character.
+
+**Output**:
+
+```
+1+1=2
+```
+
+### Combining BRE Patterns
+
+You can combine these elements to create more complex patterns.
+
+**Example: Matching an Email Address**
+
+```bash
+echo "user@example.com" | grep "^[a-zA-Z0-9._%+-]\+@[a-zA-Z0-9.-]\+\.[a-zA-Z]\{2,4\}$"
+```
+
+- **Explanation**:
+  - `^[a-zA-Z0-9._%+-]\+`: Matches the username part, consisting of letters, digits, and special characters.
+  - `@[a-zA-Z0-9.-]\+`: Matches the domain name.
+  - `\.[a-zA-Z]\{2,4\}$`: Matches the top-level domain, which can be 2 to 4 characters long.
+
+**Output**:
+
+```
+user@example.com
+```
+
+### Using BRE in `sed`
+
+The `sed` command uses BRE to perform text transformations.
+
+**Example: Replacing a Word**
+
+```bash
+echo "hello world" | sed "s/world/universe/"
+```
+
+- **Explanation**: The `sed` command replaces "world" with "universe" in the input string.
+
+**Output**:
+
+```
+hello universe
+```
+
+### Summary
+
+- **BRE Basics**: BRE uses literal characters and metacharacters (`^`, `$`, `.`, `[]`, `[^]`, `*`, `\`) to define patterns.
+- **Matching and Searching**: Use tools like `grep` and `sed` to match and manipulate text based on BRE patterns.
+- **Character Classes**: Use brackets to define sets or ranges of characters.
+- **Anchors**: Use `^` and `$` to match the start and end of lines.
+- **Repetition**: Use `*` to match zero or more occurrences of the preceding character.
