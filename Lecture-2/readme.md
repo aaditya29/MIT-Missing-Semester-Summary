@@ -984,3 +984,117 @@ hello universe
 - **Character Classes**: Use brackets to define sets or ranges of characters.
 - **Anchors**: Use `^` and `$` to match the start and end of lines.
 - **Repetition**: Use `*` to match zero or more occurrences of the preceding character.
+
+## `tmux` in Linux
+
+**Introduction to tmux in Linux**
+
+**What is tmux?**
+
+- `tmux` (terminal multiplexer) is a command-line tool that allows you to manage multiple terminal sessions from a single window. This is especially useful when working on remote servers, as it lets you keep sessions alive even if your connection drops, and switch between tasks easily.
+
+**Why is tmux needed?**
+
+1. **Session Persistence**: You can disconnect from a remote session and reconnect later without losing your work.
+2. **Multiple Panes**: Split a single terminal window into multiple panes, each running a different task.
+3. **Session Management**: You can run multiple terminal sessions simultaneously and switch between them easily.
+4. **Collaboration**: Multiple users can connect to the same tmux session, making it useful for pair programming or troubleshooting.
+
+### **Basic tmux Commands**
+
+1. **Starting a tmux session:**
+
+   ```bash
+   tmux
+   ```
+
+   This will start a new tmux session with a default name.
+
+2. **Creating a new named session:**
+
+   ```bash
+   tmux new -s session_name
+   ```
+
+   Replace `session_name` with any name you prefer. This is useful for identifying sessions.
+
+3. **Detaching from a session:**
+
+   ```bash
+   Ctrl + b, then d
+   ```
+
+   This will detach you from the current session, leaving it running in the background.
+
+4. **Listing all tmux sessions:**
+
+   ```bash
+   tmux ls
+   ```
+
+   This command shows all active tmux sessions.
+
+5. **Reattaching to a session:**
+
+   ```bash
+   tmux attach -t session_name
+   ```
+
+   Replaces `session_name` with the name of the session you want to reattach to.
+
+6. **Splitting the terminal window horizontally:**
+
+   ```bash
+   Ctrl + b, then "
+   ```
+
+   This will split the current pane horizontally, creating two panes stacked on top of each other.
+
+7. **Splitting the terminal window vertically:**
+
+   ```bash
+   Ctrl + b, then %
+   ```
+
+   This splits the current pane vertically, side by side.
+
+8. **Navigating between panes:**
+
+   ```bash
+   Ctrl + b, then arrow key
+   ```
+
+   Use the arrow keys to move between panes.
+
+9. **Closing a pane:**
+
+   ```bash
+   exit
+   ```
+
+   Type `exit` in the pane you want to close, or you can close the terminal window normally.
+
+10. **Killing a session:**
+    ```bash
+    tmux kill-session -t session_name
+    ```
+    This will terminate the specified session.
+
+### **Practical Use Cases**
+
+- **Running Multiple Tasks Simultaneously**: For example, you can have one pane running a web server, another watching logs, and another for general commands.
+- **Remote Work**: You can start a session on a remote server, disconnect, and reconnect later, picking up exactly where you left off.
+- **Collaborative Debugging**: Share a tmux session with a colleague to troubleshoot an issue together.
+
+### **Getting Started**
+
+To get started with tmux:
+
+1. Install tmux (if it's not already installed):
+
+   ```bash
+   sudo apt-get install tmux  # For Debian-based systems
+   sudo yum install tmux      # For RedHat-based systems
+   ```
+
+2. Start a new session using `tmux` and explore the basic commands above.
